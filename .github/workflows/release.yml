@@ -25,9 +25,6 @@ jobs:
 
       - name: Build noter
         run: php -d phar.readonly=0 build.php
-          
-      - name: Package
-        run: tar -zcvf x-ui-linux-${{ matrix.platform }}.tar.gz x-ui
 
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v4
