@@ -17,12 +17,14 @@ while getopts "k:u:" opt; do
   case $opt in
     k)
       key=$OPTARG
+      LOGI "Key: $key"
       ;;
     u)
       url=$OPTARG
+      LOGI "URL: $url"
       ;;
     *)
-      echo "Invalid option"
+      LOGE "Invalid option"
       exit 1
       ;;
   esac
@@ -48,9 +50,14 @@ if [[ $? -ne 0 ]]; then
 fi
 
 chmod +x /usr/local/bin/noter
+
 mkdir -p /usr/local/noter
 
 config_file="/usr/local/noter/noter.zconf"
+
+LOGI "Запись конфигурации..."
+LOGI "NOTER_URL: ${url:-\"\"}"
+LOGI "NOTER_KEY: ${key:-\"\"}"
 
 if [ -n "$url" ]; then
   echo "NOTER_URL=\"$url\"" > $config_file
