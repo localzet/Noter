@@ -1,0 +1,22 @@
+{
+    "name": "zorin/noter",
+    "type": "project",
+    "require": {
+        "localzet/console": "^1.1",
+        "localzet/http": "^2.0",
+        "vlucas/phpdotenv": "^5.6",
+        "localzet/zconf": "^1.0"
+    },
+    "license": "AGPL-3-or-later",
+    "autoload": {
+        "psr-4": {
+            "Zorin\\Noter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ivan Zorin",
+            "email": "ivan@zorin.space"
+        }
+    ]
+}
