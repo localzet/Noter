@@ -41,15 +41,12 @@ if [[ ! -n "$tag_version" ]]; then
 fi
 
 LOGI "Получена версия noter: ${tag_version}, запуск установки..."
-wget -N --no-check-certificate -O /usr/local/noter.tar.gz "https://github.com/localzet/noter/releases/download/${tag_version}/noter.tar.gz"
+wget -N --no-check-certificate -O /usr/local/bin/noter "https://github.com/localzet/noter/releases/download/${tag_version}/noter"
 if [[ $? -ne 0 ]]; then
     LOGE "Ошибка загрузки noter, пожалуйста, убедитесь, что ваш сервер имеет доступ к Github"
     exit 1
 fi
 
-cd /usr/local/bin
-tar zxvf /usr/local/noter.tar.gz
-rm /usr/local/noter.tar.gz -f
 chmod +x /usr/local/bin/noter
 
 # Создание директории для конфигурации, если она не существует
