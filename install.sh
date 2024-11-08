@@ -51,7 +51,19 @@ chmod +x /usr/local/bin/noter
 mkdir -p /usr/local/noter
 
 config_file="/usr/local/noter/noter.zconf"
-echo -e "NOTER_URL=${url:-\"\"}\nNOTER_KEY=${key:-\"\"}" > $config_file
+
+if [ -n "$url" ]; then
+  echo "NOTER_URL=\"$url\"" > $config_file
+else
+  echo "NOTER_URL=\"\"" > $config_file
+fi
+
+if [ -n "$key" ]; then
+  echo "NOTER_KEY=\"$key\"" >> $config_file
+else
+  echo "NOTER_KEY=\"\"" >> $config_file
+fi
+
 LOGI "Файл конфигурации $config_file создан."
 
 LOGI "Установка завершена..."
