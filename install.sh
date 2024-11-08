@@ -48,15 +48,10 @@ if [[ $? -ne 0 ]]; then
 fi
 
 chmod +x /usr/local/bin/noter
-
-# Создание директории для конфигурации, если она не существует
 mkdir -p /usr/local/noter
 
-# Создание или обновление файла конфигурации
 config_file="/usr/local/noter/noter.zconf"
-
 echo -e "NOTER_URL=${url:-\"\"}\nNOTER_KEY=${key:-\"\"}" > $config_file
-
 LOGI "Файл конфигурации $config_file создан."
 
 LOGI "Установка завершена..."
