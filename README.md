@@ -12,11 +12,6 @@
 [![](https://img.shields.io/github/downloads/localzet/noter/total)](#)
 [![](https://img.shields.io/github/license/localzet/noter?longCache=true)](#)
 
-# Noter
-
-Noter - это утилита командной строки для создания и управления заметками. Программа использует PHP и может быть
-установлена и использована на любой системе, поддерживающей PHP.
-
 ## Особенности
 
 - Быстрое создание заметок через командную строку
