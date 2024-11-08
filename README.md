@@ -19,3 +19,13 @@
     <img src="https://img.shields.io/github/license/localzet/Server?label=%D0%9B%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F" alt="Лицензия">
   </a>
 </p>
+
+## Установка и обновление
+
+```
+bash <(curl -Ls https://raw.githubusercontent.com/localzet/noter/master/install.sh) 
+```
+Или с параметрами:
+```
+bash <(curl -Ls https://raw.githubusercontent.com/localzet/noter/master/install.sh) -- -u "https://your.custom.url" -k "your_key_value"
+```
