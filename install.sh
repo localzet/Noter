@@ -60,15 +60,15 @@ LOGI "NOTER_URL: ${url:-\"\"}"
 LOGI "NOTER_KEY: ${key:-\"\"}"
 
 if [ -n "$url" ]; then
-  echo "NOTER_URL=\"$url\"" > $config_file
+  echo "NOTER_URL = \"$url\"" > $config_file
 else
-  echo "NOTER_URL=\"\"" > $config_file
+  echo "NOTER_URL = \"\"" > $config_file
 fi
 
 if [ -n "$key" ]; then
-  echo "NOTER_KEY=\"$key\"" >> $config_file
+  echo "NOTER_KEY = \"$key\"" >> $config_file
 else
-  echo "NOTER_KEY=\"\"" >> $config_file
+  echo "NOTER_KEY = \"\"" >> $config_file
 fi
 
 LOGI "Файл конфигурации $config_file создан."
