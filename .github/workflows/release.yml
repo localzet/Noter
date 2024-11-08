@@ -21,7 +21,7 @@ jobs:
           php-version: '8.2'
 
       - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
+        run: composer install
 
       - name: Build noter
         run: php -d phar.readonly=0 build.php
