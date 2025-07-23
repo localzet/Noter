@@ -31,7 +31,9 @@ class NoteCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $content = $input->getArgument('content');
-        if (!$content) $content = file_get_contents('php://stdin');
+        if (!$content) {
+            $content = file_get_contents('php://stdin');
+        }
 
         $url = $this->config['NOTER_URL'];
         $apiKey = $this->config['NOTER_KEY'];
