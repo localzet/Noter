@@ -12,11 +12,15 @@ $pharPath = class_exists(Phar::class, false)
 $installPath = Composer\InstalledVersions::getRootPackage()['install_path']
     ?? null;
 
-define('BASE_PATH', $pharPath
+define(
+    'BASE_PATH',
+    $pharPath
     ? dirname($pharPath)
-    : (str_starts_with($installPath, 'phar://')
+    : (
+        str_starts_with($installPath, 'phar://')
         ? $installPath
-        : (realpath($installPath)
+        : (
+            realpath($installPath)
             ?? dirname(__DIR__)
         )
     )
@@ -44,6 +48,6 @@ $console = new Console([
         'bin_filename' => 'noter',
     ],
 ]);
-$console->add(new NoteCommand);
+$console->add(new NoteCommand());
 $console->setDefaultCommand('note', true);
 $console->run();
