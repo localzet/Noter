@@ -1,5 +1,6 @@
 {
     "name": "zorin/noter",
+    "description": "CLI utility for creating and managing notes.",
     "type": "project",
     "require": {
         "localzet/console": "^1.1",
@@ -7,7 +8,7 @@
         "vlucas/phpdotenv": "^5.6",
         "localzet/zconf": "^1.0"
     },
-    "license": "AGPL-3-or-later",
+    "license": "AGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "Zorin\\Noter\\": "src/"
