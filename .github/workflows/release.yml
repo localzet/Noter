@@ -1,3 +1,5 @@
+# Copyright © 2016-2026 Localzet Group. All rights reserved.
+# SPDX-License-Identifier: AGPL-3.0-or-later
 name: Release Noter
 
 on:
@@ -22,22 +24,20 @@ jobs:
           php-version: '8.4'
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --no-interaction --prefer-dist
 
-      - name: Build noter
-        run: php -d phar.readonly=0 build.php
+      - name: Build PHAR
+        run: composer run build:phar
 
-      - name: Upload files to Artifacts
+      - name: Upload PHAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: noter
-          path: build/noter
+          name: noter-phar
+          path: build/noter.phar
 
-      - name: Upload files to GH release
-        uses: svenstaro/upload-release-action@v2
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          file: build/noter
-          asset_name: noter
-          prerelease: false
+          tag_name: ${{ github.ref_name }}
+          files: build/noter.phar
+          fail_on_unmatched_files: true

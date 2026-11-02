@@ -10,4 +10,6 @@ if ! grep -q 'note' <<< "$output"; then
     exit 1
 fi
 
+php -r '$phar = new Phar("build/noter.phar"); if (!$phar->offsetExists("LICENSE")) { fwrite(STDERR, "PHAR does not contain the project license.\n"); exit(1); }'
+
 printf 'Noter CLI help smoke test passed.\n'
