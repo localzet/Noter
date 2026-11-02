@@ -6,7 +6,7 @@
 
 #### Утилита командной строки для создания и управления заметками
 
-Требуется PHP 8.2+ и расширение cURL. Noter отправляет заметки на настроенный HTTP(S)-приёмник; используйте HTTPS для удалённых серверов.
+Требуется PHP 8.4.1+ и расширение cURL. Noter отправляет заметки на настроенный HTTP(S)-приёмник; используйте HTTPS для удалённых серверов.
 
 [![](https://img.shields.io/github/commit-activity/t/localzet/noter)](#)
 [![](https://img.shields.io/github/v/release/localzet/noter)](#)

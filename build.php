@@ -67,7 +67,7 @@ $console = new Console([
         'phar_stub' => 'stub.php',
 
         'signature_algorithm' => Phar::SHA256, // Phar::MD5, Phar::SHA1, Phar::SHA256, Phar::SHA512, Phar::OPENSSL.
-        'php_version' => 8.2,
+        'php_version' => 8.4,
         'custom_ini' => 'memory_limit = 256M',
 
         'bin_filename' => 'noter',
