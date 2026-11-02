@@ -1235,25 +1235,25 @@
         },
         {
             "name": "localzet/server",
-            "version": "v7.0.0",
+            "version": "v7.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/Server.git",
-                "reference": "8c862f887a99f1deb4a266143743159e3dddb282"
+                "reference": "e82db87e618e4582d2904479edcf7d8a91714451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/Server/zipball/8c862f887a99f1deb4a266143743159e3dddb282",
-                "reference": "8c862f887a99f1deb4a266143743159e3dddb282",
+                "url": "https://api.github.com/repos/localzet/Server/zipball/e82db87e618e4582d2904479edcf7d8a91714451",
+                "reference": "e82db87e618e4582d2904479edcf7d8a91714451",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
                 "ext-json": "*",
                 "php": ">=8.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "^10.5 || ^11 || ^12",
+                "phpstan/phpstan": "^2.3",
                 "revolt/event-loop": "^1.0"
             },
             "suggest": {
@@ -1318,7 +1318,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-30T17:12:37+00:00"
+            "time": "2026-11-02T19:40:01+00:00"
         },
         {
             "name": "localzet/zconf",
