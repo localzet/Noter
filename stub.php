@@ -73,6 +73,6 @@ $console = new Console([
         'bin_filename' => 'noter',
     ],
 ]);
-$console->add(new NoteCommand());
+$console->addCommand(new NoteCommand());
 $console->setDefaultCommand('note', true);
 $console->run();
