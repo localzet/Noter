@@ -59,7 +59,7 @@ $console = new Console([
 
         'exclude_pattern' => '#^(?!.*(composer.json|/.github/|/.idea/|/.git/|/.setting/|/runtime/|/vendor-bin/|/build/))(.*)$#',
         'exclude_files' => [
-            'noter.zconf', 'LICENSE', 'composer.json', 'composer.lock', 'localzet.phar', 'localzet.bin', 'build.php'
+            'noter.zconf', 'composer.json', 'composer.lock', 'localzet.phar', 'localzet.bin', 'build.php'
         ],
 
         'phar_alias' => 'noter',
