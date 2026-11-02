@@ -25,6 +25,7 @@
     "scripts": {
         "lint": "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
         "build": "php -d phar.readonly=0 build.php",
+        "build:phar": "NOTER_BUILD_PHAR=1 php -d phar.readonly=0 build.php",
         "test": "bash tests/smoke.sh && php tests/integration.php"
     },
     "config": {

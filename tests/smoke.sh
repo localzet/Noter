@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-output=$(./build/noter --help)
+output=$(php ./build/noter.phar --help)
 if ! grep -q 'note' <<< "$output"; then
     printf 'Noter help output does not list the note command.\n' >&2
     exit 1

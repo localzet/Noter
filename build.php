@@ -73,5 +73,6 @@ $console = new Console([
         'bin_filename' => 'noter',
     ],
 ]);
-$console->setDefaultCommand('build:bin', true);
+$buildCommand = getenv('NOTER_BUILD_PHAR') === '1' ? 'build:phar' : 'build:bin';
+$console->setDefaultCommand($buildCommand, true);
 $console->run();

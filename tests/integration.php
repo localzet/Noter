@@ -22,7 +22,7 @@ function expect(bool $condition, string $message): void
     }
 }
 
-$binary = dirname(__DIR__) . '/build/noter';
+$binary = dirname(__DIR__) . '/build/noter.phar';
 expect(is_file($binary), 'Build the Noter binary before running integration tests.');
 
 $socket = stream_socket_server('tcp://127.0.0.1:0', $errno, $error);
@@ -70,7 +70,7 @@ try {
 
     $writeConfig("http://127.0.0.1:{$port}/success");
     $pipes = [];
-    $command = proc_open([$tempBinary, 'alpha <beta>'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    $command = proc_open([PHP_BINARY, $tempBinary, 'alpha <beta>'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     expect(is_resource($command), 'Could not start Noter.');
     fclose($pipes[0]);
     $stdout = stream_get_contents($pipes[1]);
@@ -83,7 +83,7 @@ try {
     expect(str_contains($stdout, 'alpha &lt;beta&gt;'), 'Noter did not send the escaped note content.');
 
     $writeConfig("http://127.0.0.1:{$port}/failure");
-    $command = proc_open([$tempBinary, 'test'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    $command = proc_open([PHP_BINARY, $tempBinary, 'test'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     expect(is_resource($command), 'Could not start Noter for the HTTP failure case.');
     fclose($pipes[0]);
     $stdout = stream_get_contents($pipes[1]);
