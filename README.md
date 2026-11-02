@@ -6,6 +6,8 @@
 
 #### Утилита командной строки для создания и управления заметками
 
+Требуется PHP 8.2+ и расширение cURL. Noter отправляет заметки на настроенный HTTP(S)-приёмник; используйте HTTPS для удалённых серверов.
+
 [![](https://img.shields.io/github/commit-activity/t/localzet/noter)](#)
 [![](https://img.shields.io/github/v/release/localzet/noter)](#)
 [![](https://img.shields.io/github/actions/workflow/status/localzet/noter/release.yml)](#)
@@ -23,8 +25,12 @@
 вашего сервера-хранилища.
 
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/localzet/noter/master/install.sh) -u "https://your.custom.url" -k "your_key_value"
+curl -fsSLo /tmp/noter-install.sh --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/localzet/noter/main/install.sh
+less /tmp/noter-install.sh
+sudo bash /tmp/noter-install.sh -u "https://your.custom.url"
 ```
+
+Установщик запросит API key без отображения ввода. Ключ также можно передать через `-k`, но аргументы команды могут попасть в историю shell и список процессов. Установщик не печатает URL или ключ, сохраняет конфигурацию с правами только для root и проверяет TLS при загрузке бинарного файла.
 
 ## Использование
 

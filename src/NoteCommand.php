@@ -27,7 +27,6 @@
 
 namespace Zorin\Noter;
 
-use http\Exception\RuntimeException;
 use localzet\Console\Commands\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,65 +38,103 @@ class NoteCommand extends Command
     protected static string $defaultName = 'note';
     protected array $config = [];
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('content', InputArgument::OPTIONAL, 'The content of the note.');
-
-        if (file_exists(BASE_PATH . '/noter.zconf')) {
-            $this->config = Parser::parseFile(BASE_PATH . '/noter.zconf');
-        } elseif (file_exists('/usr/local/noter/noter.zconf')) {
-            $this->config = Parser::parseFile('/usr/local/noter/noter.zconf');
-        }
-        if (empty($this->config) || !isset($this->config['NOTER_URL']) || !isset($this->config['NOTER_KEY'])) {
-            throw new RuntimeException('Please set NOTER_URL or NOTER_KEY');
-        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->loadConfig();
+
         $content = $input->getArgument('content');
         if (!$content) {
             $content = file_get_contents('php://stdin');
         }
 
+        if (!is_string($content)) {
+            $output->writeln('Unable to read note content.');
+            return Command::FAILURE;
+        }
+
         $url = $this->config['NOTER_URL'];
         $apiKey = $this->config['NOTER_KEY'];
+        if (!is_string($url) || !is_string($apiKey)) {
+            $output->writeln('NOTER_URL and NOTER_KEY must be strings.');
+            return Command::FAILURE;
+        }
+        $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !in_array($scheme, ['http', 'https'], true)) {
+            $output->writeln('NOTER_URL must be a valid HTTP or HTTPS URL.');
+            return Command::FAILURE;
+        }
+        if (str_contains($apiKey, "\r") || str_contains($apiKey, "\n")) {
+            $output->writeln('NOTER_KEY must not contain line breaks.');
+            return Command::FAILURE;
+        }
 
-        // Валидация контента
         $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
-
-        // Инициализация cURL
         $ch = curl_init($url);
+        if ($ch === false) {
+            $output->writeln('Unable to initialize the HTTP request.');
+            return Command::FAILURE;
+        }
 
-        // Параметры запроса
-        $postData = json_encode(['content' => $content]);
+        try {
+            $postData = json_encode(['content' => $content], JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            curl_close($ch);
+            $output->writeln('Note content is not valid UTF-8.');
+            return Command::FAILURE;
+        }
         $headers = [
             'Content-Type: application/json',
             'X-API-KEY: ' . $apiKey,
         ];
 
-        // Настройки cURL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $postData,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+        ]);
 
-        // Выполнение запроса
         $response = curl_exec($ch);
-
-        // Проверка на ошибки
+        $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         if ($response === false) {
-            $error = curl_error($ch);
             curl_close($ch);
-            $output->writeln('Ошибка cURL: ' . $error);
+            $output->writeln('The note request failed. Check the URL and network connection.');
+            return Command::FAILURE;
+        }
+        curl_close($ch);
+
+        if ($status < 200 || $status >= 300) {
+            $output->writeln(sprintf('The note server returned HTTP %d.', $status));
             return Command::FAILURE;
         }
 
-        curl_close($ch);
-
-        // Логирование и вывод ответа
         $output->writeln('Response: ' . $response);
 
         return Command::SUCCESS;
+    }
+
+    private function loadConfig(): void
+    {
+        if (file_exists(BASE_PATH . '/noter.zconf')) {
+            $this->config = Parser::parseFile(BASE_PATH . '/noter.zconf') ?? [];
+        } elseif (file_exists('/usr/local/noter/noter.zconf')) {
+            $this->config = Parser::parseFile('/usr/local/noter/noter.zconf') ?? [];
+        }
+
+        if (
+            empty($this->config['NOTER_URL'])
+            || !isset($this->config['NOTER_KEY'])
+            || $this->config['NOTER_KEY'] === ''
+        ) {
+            throw new \RuntimeException('Please set NOTER_URL and NOTER_KEY.');
+        }
     }
 }
