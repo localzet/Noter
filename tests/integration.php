@@ -68,6 +68,19 @@ try {
         chmod($configPath, 0600);
     };
 
+    $writeConfig('http://notes.example.test/success');
+    $pipes = [];
+    $command = proc_open([PHP_BINARY, $tempBinary, 'must not send'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    expect(is_resource($command), 'Could not start Noter for the insecure URL case.');
+    fclose($pipes[0]);
+    $stdout = stream_get_contents($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    $status = proc_close($command);
+    expect($status !== 0, 'Noter accepted a non-loopback HTTP URL.');
+    expect(str_contains($stdout . $stderr, 'must use HTTPS'), 'Noter did not explain the HTTPS requirement.');
+
     $writeConfig("http://127.0.0.1:{$port}/success");
     $pipes = [];
     $command = proc_open([PHP_BINARY, $tempBinary, 'alpha <beta>'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);

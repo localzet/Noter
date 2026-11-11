@@ -64,8 +64,18 @@ class NoteCommand extends Command
             return Command::FAILURE;
         }
         $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !in_array($scheme, ['http', 'https'], true)) {
-            $output->writeln('NOTER_URL must be a valid HTTP or HTTPS URL.');
+        $host = parse_url($url, PHP_URL_HOST);
+        $packedHost = is_string($host) ? inet_pton(trim($host, '[]')) : false;
+        $isLoopback = $packedHost !== false && (
+            (strlen($packedHost) === 4 && ord($packedHost[0]) === 127)
+            || $packedHost === inet_pton('::1')
+        );
+        if (
+            !filter_var($url, FILTER_VALIDATE_URL)
+            || !in_array($scheme, ['http', 'https'], true)
+            || ($scheme === 'http' && !$isLoopback)
+        ) {
+            $output->writeln('NOTER_URL must use HTTPS, or HTTP with a loopback IP address.');
             return Command::FAILURE;
         }
         if (str_contains($apiKey, "\r") || str_contains($apiKey, "\n")) {
