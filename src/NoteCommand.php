@@ -24,7 +24,6 @@
  *              For any questions, please contact <creator@localzet.com>
 */
 
-
 namespace Zorin\Noter;
 
 use localzet\Console\Commands\Command;
