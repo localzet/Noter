@@ -71,7 +71,7 @@ download_path=$(mktemp '/usr/local/bin/.noter.download.XXXXXX')
 if ! curl --fail --silent --show-error --location \
     --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time 120 \
     --output "$download_path" \
-    "https://github.com/localzet/noter/releases/download/${tag_version}/noter"; then
+    "https://github.com/localzet/noter/releases/download/${tag_version}/noter.phar"; then
     LOGE 'Could not download Noter.'
     exit 1
 fi

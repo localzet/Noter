@@ -1,0 +1,15 @@
+{
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "[php]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
+  },
+  "search.exclude": {
+    "**/vendor": true,
+    "**/build": true
+  }
+}
