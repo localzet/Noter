@@ -48,22 +48,40 @@ class NoteCommand extends Command
     {
         $this->loadConfig();
 
-        $content = $input->getArgument('content');
-        if ($content === null) {
-            $content = file_get_contents('php://stdin');
-        }
-
-        if (!is_string($content)) {
+        $content = $this->readContent($input);
+        if ($content === false) {
             $output->writeln('Unable to read note content.');
             return Command::FAILURE;
         }
 
+        $endpoint = $this->validatedEndpoint($output);
+        if ($endpoint === null) {
+            return Command::FAILURE;
+        }
+
+        return $this->sendNote($endpoint['url'], $endpoint['apiKey'], $content, $output);
+    }
+
+    private function readContent(InputInterface $input): string|false
+    {
+        $content = $input->getArgument('content');
+        if ($content !== null) {
+            return is_string($content) ? $content : false;
+        }
+
+        return file_get_contents('php://stdin');
+    }
+
+    /** @return array{url:string,apiKey:string}|null */
+    private function validatedEndpoint(OutputInterface $output): ?array
+    {
         $url = $this->config['NOTER_URL'];
         $apiKey = $this->config['NOTER_KEY'];
         if (!is_string($url) || !is_string($apiKey)) {
             $output->writeln('NOTER_URL and NOTER_KEY must be strings.');
-            return Command::FAILURE;
+            return null;
         }
+
         $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
         $host = parse_url($url, PHP_URL_HOST);
         $packedHost = is_string($host) ? inet_pton(trim($host, '[]')) : false;
@@ -77,13 +95,19 @@ class NoteCommand extends Command
             || ($scheme === 'http' && !$isLoopback)
         ) {
             $output->writeln('NOTER_URL must use HTTPS, or HTTP with a loopback IP address.');
-            return Command::FAILURE;
-        }
-        if (str_contains($apiKey, "\r") || str_contains($apiKey, "\n")) {
-            $output->writeln('NOTER_KEY must not contain line breaks.');
-            return Command::FAILURE;
+            return null;
         }
 
+        if (str_contains($apiKey, "\r") || str_contains($apiKey, "\n")) {
+            $output->writeln('NOTER_KEY must not contain line breaks.');
+            return null;
+        }
+
+        return ['url' => $url, 'apiKey' => $apiKey];
+    }
+
+    private function sendNote(string $url, string $apiKey, string $content, OutputInterface $output): int
+    {
         $ch = curl_init($url);
         if ($ch === false) {
             $output->writeln('Unable to initialize the HTTP request.');
@@ -104,7 +128,7 @@ class NoteCommand extends Command
 
         $responseBytes = 0;
         $responseTooLarge = false;
-        curl_setopt_array($ch, [
+        $options = [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData,
             CURLOPT_HTTPHEADER => $headers,
@@ -121,7 +145,12 @@ class NoteCommand extends Command
                 $responseBytes += $chunkLength;
                 return $chunkLength;
             },
-        ]);
+        ];
+        if (!curl_setopt_array($ch, $options)) {
+            curl_close($ch);
+            $output->writeln('Unable to configure the HTTP request.');
+            return Command::FAILURE;
+        }
 
         $response = curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
