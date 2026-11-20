@@ -82,7 +82,6 @@ class NoteCommand extends Command
             return Command::FAILURE;
         }
 
-        $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
         $ch = curl_init($url);
         if ($ch === false) {
             $output->writeln('Unable to initialize the HTTP request.');

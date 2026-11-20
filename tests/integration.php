@@ -83,7 +83,7 @@ try {
 
     $writeConfig("http://127.0.0.1:{$port}/success");
     $pipes = [];
-    $command = proc_open([PHP_BINARY, $tempBinary, 'alpha <beta>'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    $command = proc_open([PHP_BINARY, $tempBinary, 'alpha <beta> & gamma'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     expect(is_resource($command), 'Could not start Noter.');
     fclose($pipes[0]);
     $stdout = stream_get_contents($pipes[1]);
@@ -93,7 +93,7 @@ try {
     $status = proc_close($command);
     expect($status === 0, 'Successful receiver request failed: ' . $stderr);
     expect(str_contains($stdout, 'integration-test-key'), 'Noter did not send the configured API key.');
-    expect(str_contains($stdout, 'alpha &lt;beta&gt;'), 'Noter did not send the escaped note content.');
+    expect(str_contains($stdout, 'alpha <beta> & gamma'), 'Noter did not send the original note content.');
 
     $writeConfig("http://127.0.0.1:{$port}/failure");
     $command = proc_open([PHP_BINARY, $tempBinary, 'test'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
