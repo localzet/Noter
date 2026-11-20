@@ -34,6 +34,8 @@ use ZCONF\Parser;
 
 class NoteCommand extends Command
 {
+    private const MAX_RESPONSE_BYTES = 8192;
+
     protected static string $defaultName = 'note';
     protected array $config = [];
 
@@ -47,7 +49,7 @@ class NoteCommand extends Command
         $this->loadConfig();
 
         $content = $input->getArgument('content');
-        if (!$content) {
+        if ($content === null) {
             $content = file_get_contents('php://stdin');
         }
 
@@ -100,20 +102,36 @@ class NoteCommand extends Command
             'X-API-KEY: ' . $apiKey,
         ];
 
+        $responseBytes = 0;
+        $responseTooLarge = false;
         curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_TIMEOUT => 20,
             CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_WRITEFUNCTION => static function ($handle, string $chunk) use (&$responseBytes, &$responseTooLarge): int {
+                $chunkLength = strlen($chunk);
+                if ($responseBytes + $chunkLength > self::MAX_RESPONSE_BYTES) {
+                    $responseTooLarge = true;
+                    return 0;
+                }
+
+                $responseBytes += $chunkLength;
+                return $chunkLength;
+            },
         ]);
 
         $response = curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         if ($response === false) {
             curl_close($ch);
+            if ($responseTooLarge) {
+                $output->writeln('The note server response exceeded the 8 KiB limit.');
+                return Command::FAILURE;
+            }
+
             $output->writeln('The note request failed. Check the URL and network connection.');
             return Command::FAILURE;
         }
@@ -124,7 +142,7 @@ class NoteCommand extends Command
             return Command::FAILURE;
         }
 
-        $output->writeln('Response: ' . $response);
+        $output->writeln(sprintf('The note was sent successfully (HTTP %d).', $status));
 
         return Command::SUCCESS;
     }

@@ -31,7 +31,7 @@ noter "A note from the terminal"
 printf '%s' "A note from standard input" | noter
 ```
 
-The receiver's response is printed to standard output. Network failures and non-2xx HTTP responses return a failure exit code.
+On success, Noter prints the HTTP status without displaying the receiver's response body. Response bodies are discarded and limited to 8 KiB; network failures, oversized responses, and non-2xx HTTP responses return a failure exit code.
 
 ## Configuration
 
