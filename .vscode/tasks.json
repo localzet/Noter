@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Noter: lint",
+      "type": "shell",
+      "command": "composer",
+      "args": ["run", "lint"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Noter: build PHAR",
+      "type": "shell",
+      "command": "composer",
+      "args": ["run", "build:phar"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Noter: test",
+      "type": "shell",
+      "command": "composer",
+      "args": ["run", "test"],
+      "dependsOn": "Noter: build PHAR",
+      "dependsOrder": "sequence",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}
