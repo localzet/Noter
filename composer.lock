@@ -1039,16 +1039,16 @@
         },
         {
             "name": "localzet/console",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/Console.git",
-                "reference": "e51fe764f6115ab867a55130ad744228f52acb0a"
+                "reference": "fdb17ce4a362a51ec778d166712b93e826bffeb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/Console/zipball/e51fe764f6115ab867a55130ad744228f52acb0a",
-                "reference": "e51fe764f6115ab867a55130ad744228f52acb0a",
+                "url": "https://api.github.com/repos/localzet/Console/zipball/fdb17ce4a362a51ec778d166712b93e826bffeb1",
+                "reference": "fdb17ce4a362a51ec778d166712b93e826bffeb1",
                 "shasum": ""
             },
             "require": {
@@ -1095,20 +1095,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-07T00:30:24+00:00"
+            "time": "2026-11-20T03:43:22+00:00"
         },
         {
             "name": "localzet/http",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/HttpClient.git",
-                "reference": "1e264cab078d966d6420bef9b07c705cb8739ce9"
+                "reference": "eae04078c17d693ceb54c21d01ccd49d81a5d5d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/HttpClient/zipball/1e264cab078d966d6420bef9b07c705cb8739ce9",
-                "reference": "1e264cab078d966d6420bef9b07c705cb8739ce9",
+                "url": "https://api.github.com/repos/localzet/HttpClient/zipball/eae04078c17d693ceb54c21d01ccd49d81a5d5d1",
+                "reference": "eae04078c17d693ceb54c21d01ccd49d81a5d5d1",
                 "shasum": ""
             },
             "require": {
@@ -1118,6 +1118,9 @@
                 "localzet/server": "^7.0",
                 "php": "^8.2",
                 "psr/http-message": "^2.0"
+            },
+            "suggest": {
+                "ext-openssl": "Required only when using HTTPS requests."
             },
             "type": "library",
             "autoload": {
@@ -1161,7 +1164,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-02T11:41:27+00:00"
+            "time": "2026-11-20T02:17:38+00:00"
         },
         {
             "name": "localzet/psr7",
@@ -1235,16 +1238,16 @@
         },
         {
             "name": "localzet/server",
-            "version": "v7.1.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/Server.git",
-                "reference": "b0d5c5dd7d01f8256df372f240ba35b14af1d399"
+                "reference": "5bdb9ac73f0855f9f8f515929be77d4a694a5333"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/Server/zipball/b0d5c5dd7d01f8256df372f240ba35b14af1d399",
-                "reference": "b0d5c5dd7d01f8256df372f240ba35b14af1d399",
+                "url": "https://api.github.com/repos/localzet/Server/zipball/5bdb9ac73f0855f9f8f515929be77d4a694a5333",
+                "reference": "5bdb9ac73f0855f9f8f515929be77d4a694a5333",
                 "shasum": ""
             },
             "require": {
@@ -1318,7 +1321,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-19T22:36:34+00:00"
+            "time": "2026-11-20T03:43:14+00:00"
         },
         {
             "name": "localzet/zconf",
