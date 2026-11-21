@@ -1238,16 +1238,16 @@
         },
         {
             "name": "localzet/server",
-            "version": "v7.2.0",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/Server.git",
-                "reference": "5bdb9ac73f0855f9f8f515929be77d4a694a5333"
+                "reference": "3b888054e76545751b379ca9205c6c25c13b11f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/Server/zipball/5bdb9ac73f0855f9f8f515929be77d4a694a5333",
-                "reference": "5bdb9ac73f0855f9f8f515929be77d4a694a5333",
+                "url": "https://api.github.com/repos/localzet/Server/zipball/3b888054e76545751b379ca9205c6c25c13b11f2",
+                "reference": "3b888054e76545751b379ca9205c6c25c13b11f2",
                 "shasum": ""
             },
             "require": {
@@ -1275,7 +1275,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "7.0.x-dev"
+                    "dev-main": "7.2.x-dev"
                 }
             },
             "autoload": {
@@ -1321,7 +1321,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-20T03:43:14+00:00"
+            "time": "2026-11-21T16:17:34+00:00"
         },
         {
             "name": "localzet/zconf",
