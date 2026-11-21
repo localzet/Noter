@@ -1039,16 +1039,16 @@
         },
         {
             "name": "localzet/console",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localzet/Console.git",
-                "reference": "fdb17ce4a362a51ec778d166712b93e826bffeb1"
+                "reference": "c22ce32f530b73edf3180f5113bd1effd59a05f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localzet/Console/zipball/fdb17ce4a362a51ec778d166712b93e826bffeb1",
-                "reference": "fdb17ce4a362a51ec778d166712b93e826bffeb1",
+                "url": "https://api.github.com/repos/localzet/Console/zipball/c22ce32f530b73edf3180f5113bd1effd59a05f2",
+                "reference": "c22ce32f530b73edf3180f5113bd1effd59a05f2",
                 "shasum": ""
             },
             "require": {
@@ -1095,7 +1095,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-20T03:43:22+00:00"
+            "time": "2026-11-21T10:30:31+00:00"
         },
         {
             "name": "localzet/http",
