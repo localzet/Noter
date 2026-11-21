@@ -16,8 +16,19 @@ if (str_starts_with($_SERVER['REQUEST_URI'], '/failure')) {
     return;
 }
 
+if (str_starts_with($_SERVER['REQUEST_URI'], '/large-response')) {
+    echo str_repeat('x', 16 * 1024);
+    return;
+}
+
+file_put_contents(
+    (string)getenv('NOTER_TEST_CAPTURE_FILE'),
+    json_encode([
+        'key' => $_SERVER['HTTP_X_API_KEY'] ?? null,
+        'content' => $body['content'] ?? null,
+    ], JSON_THROW_ON_ERROR) . "\n",
+    FILE_APPEND | LOCK_EX,
+);
+
 header('Content-Type: application/json');
-echo json_encode([
-    'key' => $_SERVER['HTTP_X_API_KEY'] ?? null,
-    'content' => $body['content'] ?? null,
-]);
+echo "\033]52;c;receiver-response-secret\007\n";
