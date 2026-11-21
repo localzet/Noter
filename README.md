@@ -122,7 +122,8 @@ Router::post('/save', function (Request $request): Response {
     
     // Проверка API ключа
     if ($request->header('X-API-KEY') === $apiKey) {
-        if ($content = $request->post('content')) {
+        $content = $request->post('content');
+        if (is_string($content)) {
             // Генерация UUID для идентификации записи
             $id = generateId();
         
