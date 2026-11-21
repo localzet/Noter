@@ -65,7 +65,7 @@ class NoteCommand extends Command
     private function readContent(InputInterface $input): string|false
     {
         $content = $input->getArgument('content');
-        if ($content !== null) {
+        if ($content !== null && $content !== '') {
             return is_string($content) ? $content : false;
         }
 

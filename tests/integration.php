@@ -122,6 +122,10 @@ try {
     expect($status === 0, 'Note content `0` was rejected: ' . $stderr);
     expect(($latestRequest()['content'] ?? null) === '0', 'Note content `0` was replaced with stdin.');
 
+    [$status, $stdout, $stderr] = $runNoter([''], "content from empty argument stdin\n");
+    expect($status === 0, 'Noter failed to read stdin for empty content: ' . $stderr);
+    expect(($latestRequest()['content'] ?? null) === "content from empty argument stdin\n", 'An empty content argument no longer reads stdin.');
+
     [$status, $stdout, $stderr] = $runNoter([], "content from stdin\n");
     expect($status === 0, 'Noter failed to read stdin: ' . $stderr);
     expect(($latestRequest()['content'] ?? null) === "content from stdin\n", 'Noter changed stdin content.');
